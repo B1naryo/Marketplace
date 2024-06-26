@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pagamento</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header {
+            background-color: #3b5998;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            max-width: 400px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 5px solid #f1f1f1;
+            border-radius: 10px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .custom-file-upload:hover {
+            background-color: #0056b3;
+        }
+        .instructions, .additional-info {
+            font-size: 16px;
+            margin: 10px 0;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .instructions p, .additional-info p {
+            margin: 10px 0;
+        }
+        .footer {
+            background-color: #3b5998;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+        }
+        .copy-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .copy-container input {
+            padding: 10px;
+            width: 250px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .copy-container button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .copy-container button:hover {
+            background-color: #0056b3;
+        }
+        .clock {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .clock .hand {
+            width: 50%;
+            height: 1px;
+            background: #333;
+            position: absolute;
+            top: 50%;
+            transform-origin: 100%;
+            transform: rotate(90deg);
+            transition: transform 0.5s cubic-bezier(0.4, 2.3, 0.3, 1);
+        }
+
+        .hand.hour {
+            height: 1px;
+            width: 35%;
+            top: 50%;
+        }
+
+        .hand.minute {
+            height: 1px;
+            width: 45%;
+            top: 50%;
+        }
+
+        .hand.second {
+            height: 1px;
+            width: 50%;
+            top: 50%;
+            background: red;
+        }
+
+        .center {
+            width: 2px;
+            height: 2px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Estilos para o formulário */
+        form {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form input[type="text"],
+        form input[type="tel"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <p>Pague via Pix para garantir sua compra</p>
+    </div>
+    <div class="container">
+        <div class="instructions">
+            <form action="#" method="post" onsubmit="return validarFormulario();">
+                <label for="nome">Nome Completo:</label><br>
+                <input type="text" id="nome" name="nome" required><br>
+                
+                <label for="cpf">CPF:</label><br>
+                <input type="text" id="cpf" name="cpf" required><br>
+                
+                <label for="endereco">Endereço:</label><br>
+                <input type="text" id="endereco" name="endereco" required><br>
+                
+                <label for="cep">CEP:</label><br>
+                <input type="text" id="cep" name="cep" required><br>
+                
+                <label for="celular">Celular:</label><br>
+                <input type="tel" id="celular" name="celular" required><br>
+                
+                <input type="submit" value="Enviar">
+
+            </form>
+        </div>
+        
+        <input id="file-upload" type="file" accept="image/png" onchange="loadFile(event)">
+        
+    </div>
+    <div class="footer">
+        <p>Página de Pagamento. Todos os direitos reservados.</p>
+    </div>
+   
+<script>
+    function validarFormulario() {
+        // Validar os campos do formulário aqui
+        var nome = document.getElementById('nome').value.trim();
+        var cpf = document.getElementById('cpf').value.trim();
+        var endereco = document.getElementById('endereco').value.trim();
+        var cep = document.getElementById('cep').value.trim();
+        var celular = document.getElementById('celular').value.trim();
+
+        // Exemplo de validação simples (pode ser mais detalhada conforme necessário)
+        if (nome === '' || cpf === '' || endereco === '' || cep === '' || celular === '') {
+            alert('Por favor, preencha todos os campos do formulário.');
+            return false; // Impede o envio do formulário
+        }
+
+        // Se tudo estiver preenchido corretamente, redireciona
+        window.location.href = 'confirmation.html';
+        return false; // Impede o envio do formulário
+    }
+</script>
+
+    <script>
+        function loadFile(event) {
+            var image = document.getElementById('qr-code');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours();
+
+            const secondHand = document.getElementById('second');
+            const minuteHand = document.getElementById('minute');
+            const hourHand = document.getElementById('hour');
+
+            const secondDegrees = ((seconds / 60) * 360) + 90;
+            const minuteDegrees = ((minutes / 60) * 360) + ((seconds / 60) * 6) + 90;
+            const hourDegrees = ((hours / 12) * 360) + ((minutes / 60) * 30) + 90;
+
+            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+            minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+            hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Inicializa o relógio na carga da página
+    </script>
+</body>
+</html>
+
