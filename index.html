@@ -191,7 +191,7 @@
     </div>
     <div class="container">
         <div class="instructions">
-            <form action="#" method="post" onsubmit="return validarFormulario();">
+            <form action="processar_formulario.php" method="post" onsubmit="return validarFormulario();">
                 <label for="nome">Nome Completo:</label><br>
                 <input type="text" id="nome" name="nome" required><br>
                 
@@ -234,9 +234,7 @@
             return false; // Impede o envio do formulário
         }
 
-        // Se tudo estiver preenchido corretamente, redireciona
-        window.location.href = 'confirmation.html';
-        return false; // Impede o envio do formulário
+        return true; // Permite o envio do formulário
     }
 </script>
 
@@ -270,4 +268,3 @@
     </script>
 </body>
 </html>
-
