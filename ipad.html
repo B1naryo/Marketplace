@@ -3,33 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Promoção – iPad 9ª Geração</title>
-
+  <title>Oferta Relâmpago – iPad 9ª Geração por R$ 1500!</title>
   <style>
-    /* --- Reset simples --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* --- Paleta e fontes --- */
     :root {
       --apple-blue: #0070c9;
       --text-dark: #1d1d1f;
       --text-light: #515154;
       --bg-page: #f6f8fc;
       --bg-card: #ffffff;
-      --radius-xl: 1.25rem;   /* 20 px */
+      --radius-xl: 1.25rem;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, ...
       background: var(--bg-page);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      min-height: 100vh;
       padding: 2rem;
       color: var(--text-dark);
     }
-
-    /* --- Cartão principal --- */
     .card {
       max-width: 620px;
       background: var(--bg-card);
@@ -38,86 +31,60 @@
       overflow: hidden;
       animation: fadeIn .8s ease-out;
     }
-    .product-image {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-    }
-    .content {
-      padding: 2rem;
-    }
-
-    /* --- Títulos & texto --- */
-    .tagline  { font-size: .875rem; letter-spacing: .07em; color: var(--apple-blue); text-transform: uppercase; margin-bottom: .5rem; }
-    .title    { font-size: 2rem;  font-weight: 700; margin-bottom: .75rem; }
-    .subtitle { font-size: 1rem;  color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.5; }
-
-    /* --- Lista de recursos --- */
-    .features {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
+    .product-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .content { padding: 2rem; }
+    .tagline  { font-size: .875rem; color: var(--apple-blue); text-transform: uppercase; margin-bottom: .5rem; }
+    .title    { font-size: 2rem; font-weight: 700; margin-bottom: .5rem; }
+    .price    { font-size: 1.5rem; font-weight: 700; color: #E53935; margin-bottom: .75rem; }
+    .subtitle { font-size: 1rem; color: var(--text-light); margin-bottom: 1rem; }
+    .features { list-style: none; margin-bottom: 1.5rem; }
     .features li {
-      margin-bottom: .75rem;
-      padding-left: 1.3rem;
+      margin-bottom: .5rem;
+      padding-left: 1.2rem;
       position: relative;
     }
     .features li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--apple-blue);
-      font-weight: 600;
+      content: "🚀"; position: absolute; left: 0; top: 0;
     }
-
-    /* --- Botão CTA --- */
     .cta {
-      display: inline-block;
       background: var(--apple-blue);
-      color: #fff;
-      padding: .9rem 2rem;
+      color: white;
+      padding: 1rem 2rem;
       border-radius: .5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.2rem;
       text-decoration: none;
-      transition: transform .2s ease, box-shadow .2s ease;
+      display: inline-block;
+      transition: transform .2s, box-shadow .2s;
     }
-    .cta:hover, .cta:focus {
+    .cta:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0,0,0,.15);
     }
-
-    /* --- Animação suave na entrada --- */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-
 <body>
-
   <article class="card">
-    <img class="product-image" src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-9th-gen-hero-2022_GEO_EMEA_LANG_PT?wid=2000&hei=1500&fmt=jpeg&qlt=90&.v=1665181900803"
+    <img class="product-image"
+         src="https://www.apple.com/br/ipad-9th-gen/placeholder.jpg"
          alt="iPad 9ª Geração — Tela Retina 10,2″">
-    
     <div class="content">
-      <p class="tagline">Nova Oferta • Tempo Limitado</p>
+      <p class="tagline">Oferta Relâmpago – Estoque Limitado!</p>
       <h1 class="title">iPad 9ª Geração</h1>
-      <p class="subtitle">Desperte sua criatividade, produtividade e diversão com o iPad mais acessível da Apple.</p>
-
+      <p class="price">R$ 1.500,00 à vista</p>
+      <p class="subtitle">O tablet perfeito da Apple, com desempenho impecável e design atemporal.</p>
       <ul class="features">
-        <li>Tela Retina de 10,2″ com cores vivas</li>
-        <li>Chip A13 Bionic para desempenho ultrarrápido</li>
+        <li>Chip A13 Bionic – super‑rápido para apps, jogos e multitarefa</li>
+        <li>Tela Retina 10,2″ com True Tone – cores vivas e nítidas</li>
+        <li>Central Stage e câmera 12 MP: chamadas claras e automáticas</li>
         <li>Compatível com Apple Pencil (1ª geração) e Smart Keyboard</li>
-        <li>Câmera frontal ultra-angular com Center Stage</li>
-        <li>Bateria que dura o dia todo</li>
+        <li>Bateria que dura o dia todo – sem se preocupar com recargas</li>
       </ul>
-
-      <a class="cta" href="https://www.seu-link.com/ipad9" target="_blank" rel="noopener">🛒 Comprar agora</a>
+      <a class="cta" href="https://www.seu-link.com/comprar-ipad9" target="_blank">🛒 Quero o meu antes que acabe!</a>
     </div>
   </article>
-
 </body>
 </html>
