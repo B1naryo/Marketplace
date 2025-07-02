@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucros em Dobro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    video#bg {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+      filter: brightness(0.3);
+    }
+
+    .content {
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      color: #00ff99;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px #00ff99;
+    }
+
+    header p {
+      color: #ccc;
+      font-size: 1.1em;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #00ff99;
+      border-radius: 12px;
+      padding: 25px;
+      max-width: 600px;
+      margin: 30px auto;
+      box-shadow: 0 0 12px #00ff99;
+    }
+
+    .card h2 {
+      color: #00ff99;
+      margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 80%;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #00ff99;
+      color: #000;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #00cc77;
+    }
+
+    .log {
+      text-align: left;
+      max-height: 180px;
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 0.9em;
+      border-top: 1px solid #00ff99;
+      margin-top: 10px;
+    }
+
+    .log p {
+      margin: 5px 0;
+    }
+
+    .money-effect {
+      font-size: 2em;
+      color: gold;
+      animation: moneyFall 2s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes moneyFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #aaa;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Vídeo de fundo -->
+  <video autoplay muted loop id="bg">
+    <source src="https://cdn.coverr.co/videos/coverr-money-raining-0997/1080p.mp4" type="video/mp4">
+  </video>
+
+  <div class="content">
+    <header>
+      <h1>Lucros em Dobro Garantido</h1>
+      <p>Transforme R$100 em R$200 de forma automática e imediata</p>
+    </header>
+
+    <section class="card">
+      <h2>📈 Como funciona?</h2>
+      <p>
+        Usamos um sistema de redistribuição automática baseado em contribuição rotativa. Quanto mais pessoas participam, mais rápido os retornos são liberados. 
+      </p>
+      <p>
+        Você envia, o sistema dobra, e o saldo retorna em até 5 minutos. É simples e validado em tempo real.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>💰 Simule seu lucro</h2>
+      <input type="number" id="valor" placeholder="Digite o valor (mínimo R$100)" min="100">
+      <br>
+      <button onclick="simular()">Calcular Lucro</button>
+      <p id="resultado"></p>
+      <div id="efeito"></div>
+      <br>
+      <button onclick="window.location.href='https://seusite.com/pagamento-pix'">Pagar via PIX</button>
+    </section>
+
+    <section class="card">
+      <h2>📊 Últimos Pagamentos</h2>
+      <div class="log" id="log">
+        <!-- logs dinâmicos aparecem aqui -->
+      </div>
+    </section>
+
+    <footer>
+      © 2025 LucroDobrado Ltda – Segurança e transparência em cada transação.
+    </footer>
+  </div>
+
+  <script>
+    function simular() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const resultado = document.getElementById("resultado");
+      const efeito = document.getElementById("efeito");
+
+      if (valor >= 100) {
+        resultado.innerText = `Você receberá R$${(valor * 2).toFixed(2)} em até 5 minutos.`;
+
+        // Efeito visual
+        const money = document.createElement("div");
+        money.innerText = "💸 R$" + (valor * 2).toFixed(2);
+        money.className = "money-effect";
+        efeito.innerHTML = '';
+        efeito.appendChild(money);
+      } else {
+        resultado.innerText = "Valor mínimo é R$100.";
+        efeito.innerHTML = '';
+      }
+    }
+
+    const nomes = ["Carlos", "Fernanda", "Lucas", "Amanda", "Marcos", "Juliana", "Renato", "Camila"];
+    const log = document.getElementById("log");
+
+    function gerarLog() {
+      const nome = nomes[Math.floor(Math.random() * nomes.length)];
+      const valor = Math.floor(Math.random() * 400 + 100);
+      const linha = document.createElement("p");
+      linha.innerText = `${nome} enviou R$${valor} e recebeu R$${valor * 2}`;
+      if (log.childNodes.length > 10) log.removeChild(log.firstChild);
+      log.appendChild(linha);
+    }
+
+    setInterval(gerarLog, 4000);
+  </script>
+
+</body>
+</html>
