@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dobro do Seu Dinheiro — Rápido e Seguro</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #001f1f, #004d4d);
+      color: #e0f7f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      color: #00ff99;
+      text-shadow: 0 0 12px #00ff99;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #b0f7d9;
+    }
+    header p.urgency {
+      color: #ff6f61;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .card {
+      background: rgba(0, 51, 51, 0.85);
+      border: 2px solid #00ff99;
+      border-radius: 15px;
+      padding: 25px 30px;
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 25px;
+      box-shadow: 0 0 25px #00ff99aa;
+      transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+      box-shadow: 0 0 40px #00ff99ff;
+    }
+
+    .card h2 {
+      color: #00ff99;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      text-align: center;
+      text-shadow: 0 0 8px #00ff99;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 14px 15px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 15px;
+      outline: none;
+      box-shadow: inset 0 0 8px #00ff99cc;
+      background-color: #003333;
+      color: #b0f7d9;
+      font-weight: 600;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(90deg, #00ff99, #00cc77);
+      border: none;
+      padding: 15px 0;
+      font-size: 1.2rem;
+      color: #001a00;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px #00ff99aa;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #00cc77, #009955);
+      box-shadow: 0 6px 14px #00ff99ee;
+    }
+
+    #resultado {
+      margin-top: 15px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: gold;
+      text-align: center;
+      text-shadow: 0 0 6px gold;
+    }
+
+    #efeito {
+      margin-top: 10px;
+      height: 40px;
+      text-align: center;
+      font-size: 1.8rem;
+      color: gold;
+      animation: moneyFall 2s ease-out forwards;
+    }
+    @keyframes moneyFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+    }
+
+    .log {
+      background: #003333cc;
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 0.9rem;
+      color: #b0f7d9;
+      box-shadow: inset 0 0 10px #00ff99cc;
+      line-height: 1.3rem;
+    }
+
+    .testimonial {
+      background: #002222cc;
+      border-left: 5px solid #00ff99;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      font-style: italic;
+      color: #a1e9c1;
+      box-shadow: 0 0 12px #00ff99aa;
+      max-width: 600px;
+    }
+    .testimonial strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #00ff99;
+      font-style: normal;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      color: #666;
+      font-size: 0.85rem;
+      padding: 15px 0 5px 0;
+      user-select: none;
+    }
+
+    /* Responsividade */
+    @media (max-width: 650px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .card {
+        padding: 20px;
+      }
+      button, input[type="number"] {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>💸 Dobre seu Dinheiro em Até 5 Minutos</h1>
+    <p>Invista a partir de R$100 e receba o dobro rapidamente com total segurança.</p>
+    <p class="urgency">🔥 Vagas limitadas – Garanta sua participação agora!</p>
+  </header>
+
+  <section class="card">
+    <h2>Como Funciona?</h2>
+    <p>Nós usamos um sistema seguro e automatizado para garantir que seu investimento seja devolvido em dobro dentro de 5 minutos após a confirmação do pagamento.</p>
+    <p>Milhares de pessoas já confiaram e lucraram com a gente todos os dias.</p>
+  </section>
+
+  <section class="card">
+    <h2>Simule seu Lucro</h2>
+    <input type="number" id="valor" placeholder="Digite o valor que quer investir (mínimo R$100)" min="100" />
+    <button onclick="simular()">Calcular Lucro</button>
+    <p id="resultado"></p>
+    <div id="efeito"></div>
+    <button onclick="window.location.href='https://link.mercadopago.com.br/dobreseudinhero'">
+      Quero Dobrar Meu Dinheiro Agora!
+    </button>
+  </section>
+
+  <section class="card">
+    <h2>Depoimentos Reais de Clientes</h2>
+    <div class="testimonial">
+      <strong>Carlos Silva</strong>
+      “Investi R$200 e recebi R$400 em menos de 5 minutos! Recomendo para quem quer lucrar rápido.”
+    </div>
+    <div class="testimonial">
+      <strong>Fernanda Oliveira</strong>
+      “O processo foi simples e transparente. Já estou indicando para amigos e familiares.”
+    </div>
+    <div class="testimonial">
+      <strong>Lucas Almeida</strong>
+      “Ganhar dinheiro assim é incrível. Nunca pensei que seria tão fácil!”
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Atividade Recente</h2>
+    <p><strong>Clientes ativos agora:</strong> <span id="clientesAtivos">0</span></p>
+    <p><strong>Total distribuído:</strong> R$ <span id="totalPago">0</span></p>
+    <div class="log" id="log"></div>
+  </section>
+
+  <footer>
+    © 2025 LucroDobrado Ltda – Segurança e transparência em cada transação.
+  </footer>
+
+  <script>
+    // Simulação do cálculo
+    function simular() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const resultado = document.getElementById("resultado");
+      const efeito = document.getElementById("efeito");
+
+      if (isNaN(valor)) {
+        resultado.textContent = "Por favor, insira um número válido.";
+        efeito.textContent = '';
+        return;
+      }
+      if (valor < 100) {
+        resultado.textContent = "Valor mínimo para investimento é R$100.";
+        efeito.textContent = '';
+        return;
+      }
+
+      resultado.textContent = `Você receberá R$${(valor * 2).toFixed(2)} em até 5 minutos.`;
+      
+      // Animação do dinheiro
+      efeito.textContent = `💸 R$${(valor * 2).toFixed(2)}`;
+      efeito.style.animation = 'none';  // reinicia a animação
+      void efeito.offsetWidth;          // trigger reflow
+      efeito.style.animation = null;
+    }
+
+    // Prova social simulada
+    const nomes = ["Carlos", "Fernanda", "Lucas", "Amanda", "Marcos", "Juliana", "Renato", "Paulo", "Joice", "Camila"];
+    const log = document.getElementById("log");
+    let clientesAtivosCount = 20;
+    let totalPagoCount = 25000;
+
+    function formatarValor(val) {
+      return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function gerarLog() {
+      const nome = nomes[Math.floor(Math.random() * nomes.length)];
+      const valor = Math.floor(Math.random() * 400 + 100);
+      const linha = document.createElement("p");
+      linha.textContent = `${nome} enviou R$${formatarValor(valor)} e recebeu R$${formatarValor(valor * 2)}.`;
+      if (log.childNodes.length > 10) log.removeChild(log.firstChild);
+      log.appendChild(linha);
+
+      // Atualiza contador e total pago
+      clientesAtivosCount = Math.max(15, Math.min(30, clientesAtivosCount + (Math.random() > 0.5 ? 1 : -1)));
+      totalPagoCount += valor * 2;
+      document.getElementById('clientesAtivos').textContent = clientesAtivosCount;
+      document.getElementById('totalPago').textContent = formatarValor(totalPagoCount);
+    }
+
+    setInterval(gerarLog, 4000);
+
+    // Inicializa com alguns dados
+    for(let i = 0; i < 5; i++) gerarLog();
+
+  </script>
+</body>
+</html>
