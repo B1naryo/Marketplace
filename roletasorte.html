@@ -388,7 +388,7 @@ function gerarRecebimentoFalso(){
   const nome  = nomesFicticios[Math.floor(Math.random()*nomesFicticios.length)];
   const premio= premiosDisp[Math.floor(Math.random()*premiosDisp.length)];
   const taxa  = (premio*0.10).toFixed(2);
-  const liquido=(premio - taxa).toFixed(2);
+  const liquido=(premio).toFixed(2);
 
   const msg = `🎉 ${nome} acabou de receber R$ ${parseFloat(liquido).toLocaleString('pt-BR',{minimumFractionDigits:2})} `+
               `após depositar R$ ${parseFloat(taxa).toLocaleString('pt-BR',{minimumFractionDigits:2})}!`;
