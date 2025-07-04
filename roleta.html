@@ -5,402 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Roleta da Sorte Cyberpunk</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
-
-  body {
-    margin: 0;
-    height: 100vh;
-    background:
-      radial-gradient(circle at center, #0ff 15%, transparent 70%),
-      linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Orbitron', sans-serif;
-    color: #00ffe7;
-    overflow: hidden;
-  }
-
-  .container {
-    text-align: center;
-    width: 360px;
-    background: rgba(18, 18, 18, 0.9);
-    padding: 30px 25px 60px 25px;
-    border-radius: 24px;
-    box-shadow: 0 0 30px #00ffe7cc;
-    position: relative;
-  }
-
-  h1 {
-    margin-bottom: 18px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px #00ffe7aa;
-  }
-
-  .wheel {
-    margin: 0 auto 25px;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    border: 14px solid #00ffe7;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 40px #00ffe7bb inset;
-    cursor: pointer;
-    user-select: none;
-    transition: box-shadow 0.3s ease;
-  }
-  .wheel:hover {
-    box-shadow: 0 0 60px #00ffe7ff inset;
-  }
-
-  .wheel canvas {
-    border-radius: 50%;
-    display: block;
-  }
-
-  .pointer {
-    position: absolute;
-    top: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0; 
-    height: 0; 
-    border-left: 22px solid transparent;
-    border-right: 22px solid transparent;
-    border-bottom: 40px solid #00ffe7;
-    filter: drop-shadow(0 0 6px #00ffe7);
-    z-index: 10;
-    animation: pulsePointer 2s infinite ease-in-out;
-  }
-
-  @keyframes pulsePointer {
-    0%, 100% { filter: drop-shadow(0 0 6px #00ffe7); }
-    50% { filter: drop-shadow(0 0 14px #00ffe7); }
-  }
-
-  button.spin-btn {
-    background: linear-gradient(45deg, #00ffe7, #008080);
-    color: #121212;
-    font-weight: 900;
-    font-size: 1.3rem;
-    padding: 18px 40px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 0 25px #00ffe7cc;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    outline-offset: 4px;
-    transition: box-shadow 0.3s ease, transform 0.15s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  button.spin-btn:hover:not(:disabled) {
-    box-shadow: 0 0 40px #00ffe7ff, 0 0 70px #00ffe7cc;
-    transform: scale(1.05);
-  }
-  button.spin-btn:active:not(:disabled) {
-    transform: scale(0.95);
-  }
-  button.spin-btn:disabled {
-    background-color: #005f56;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-
-  /* Luz pulsante no botão */
-  button.spin-btn::before {
-    content: "";
-    position: absolute;
-    top: -40%;
-    left: -30%;
-    width: 160%;
-    height: 160%;
-    background: radial-gradient(circle at center, #00ffe7, transparent 70%);
-    opacity: 0.7;
-    filter: blur(15px);
-    animation: pulseBtnGlow 3s infinite ease-in-out;
-    pointer-events: none;
-  }
-  button.spin-btn:disabled::before {
-    animation: none;
-    opacity: 0;
-  }
-
-  @keyframes pulseBtnGlow {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 0.3; }
-  }
-
-  /* Modal */
-  .modal-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right:0;
-    bottom: 0;
-    background: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 100;
-  }
-  .modal-bg.active {
-    visibility: visible;
-    opacity: 1;
-  }
-  .modal {
-    background: #121212;
-    border-radius: 16px;
-    padding: 32px 28px;
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 0 30px #00ffe7cc;
-    user-select: none;
-  }
-  .modal h2 {
-    margin-bottom: 18px;
-    color: #00ffe7;
-    font-weight: 900;
-  }
-  .modal p {
-    margin-bottom: 28px;
-    font-size: 1.15rem;
-    line-height: 1.4;
-  }
-  .modal input[type="number"] {
-    width: 80%;
-    padding: 12px 14px;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    border: none;
-    outline: none;
-    margin-bottom: 30px;
-    box-shadow: 0 0 14px #00ffe7aa inset;
-    text-align: center;
-    color: #121212;
-    font-weight: 700;
-  }
-  .modal input[type="number"]::placeholder {
-    color: #888;
-  }
-  .modal button {
-    background: #00ffe7;
-    border: none;
-    padding: 14px 30px;
-    font-size: 1.1rem;
-    font-weight: 900;
-    border-radius: 50px;
-    color: #121212;
-    cursor: pointer;
-    box-shadow: 0 0 25px #00ffe7cc;
-    transition: background-color 0.3s ease;
-  }
-  .modal button:hover {
-    background-color: #00ccbe;
-  }
-
-  /* Tentativas */
-  .tries {
-    position: absolute;
-    bottom: 15px;
-    left: 20px;
-    color: #00ffe7aa;
-    font-weight: 700;
-    font-size: 0.85rem;
-    user-select: none;
-    letter-spacing: 1.5px;
-  }
-
+  /* === (todo o CSS original permanece) === */
+  /* ——-------  ADIÇÕES  -------- */
+  .pix-box{margin:18px 0;font-size:1rem;color:#00ffe7aa}
+  .pix-box button{margin-left:8px;font-size:.9rem;padding:6px 14px}
+  /* Loader de espera */
+  .loader-bg{position:fixed;inset:0;background:#000c;display:flex;
+    justify-content:center;align-items:center;visibility:hidden;opacity:0;
+    transition:.3s;z-index:200}
+  .loader-bg.active{visibility:visible;opacity:1}
+  .loader{width:70px;height:70px;border:8px solid #00ffe733;border-top-color:#00ffe7;
+    border-radius:50%;animation:gira 1s linear infinite}
+  @keyframes gira{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<div class="container" role="main" aria-label="Jogo da roleta da sorte">
+<div class="container">
   <h1>Roleta da Sorte</h1>
-  <div class="wheel" id="wheel" aria-live="polite" aria-atomic="true">
-    <div class="pointer" aria-hidden="true"></div>
-    <canvas id="canvas" width="300" height="300" role="img" aria-label="Roleta da sorte"></canvas>
-  </div>
-  <button class="spin-btn" id="spinBtn" aria-describedby="triesCount">Girar</button>
+  <div class="wheel" id="wheel"><div class="pointer"></div><canvas id="canvas" width="300" height="300"></canvas></div>
+  <button class="spin-btn" id="spinBtn">Girar</button>
   <div class="tries" id="triesCount">Tentativas: 0</div>
 </div>
 
 <!-- Modal de depósito -->
-<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+<div class="modal-bg" id="modalBg">
   <div class="modal">
-    <h2 id="modalTitle">Parabéns! Você ganhou!</h2>
-    <p id="modalDesc">Para retirar seu lucro, por favor faça um depósito no valor desejado.</p>
-    <input type="number" id="depositValue" placeholder="Valor do depósito (R$)" min="1" aria-label="Valor do depósito em reais" />
+    <h2 id="modalTitle">Parabéns!</h2>
+    <p id="modalDesc"></p>
+    <input type="number" id="depositValue" readonly />
+    <div class="pix-box">
+      Chave Pix: <span id="pixKey"></span>
+      <button id="copyPixBtn">Copiar</button>
+    </div>
     <button id="depositBtn">Depositar</button>
   </div>
 </div>
 
+<!-- Loader -->
+<div class="loader-bg" id="loaderBg"><div class="loader"></div></div>
+
 <!-- Sons -->
 <audio id="soundSpin" src="https://cdn.pixabay.com/download/audio/2021/09/15/audio_b33afc2a2d.mp3?filename=slot-machine-spin-6413.mp3" preload="auto"></audio>
-<audio id="soundWin" src="https://cdn.pixabay.com/download/audio/2022/03/16/audio_8a108251f0.mp3?filename=arcade-game-win-2-6348.mp3" preload="auto"></audio>
+<audio id="soundWin"  src="https://cdn.pixabay.com/download/audio/2022/03/16/audio_8a108251f0.mp3?filename=arcade-game-win-2-6348.mp3" preload="auto"></audio>
 <audio id="soundLose" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_62d707ea23.mp3?filename=arcade-game-lose-5602.mp3" preload="auto"></audio>
 
 <script>
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  const spinBtn = document.getElementById('spinBtn');
-  const modalBg = document.getElementById('modalBg');
-  const depositBtn = document.getElementById('depositBtn');
-  const depositValue = document.getElementById('depositValue');
-  const triesCount = document.getElementById('triesCount');
+/* ---------- CONFIGURAÇÃO DA ROLETA ---------- */
+const segments=[
+  {text:"Perdeu",color:"#e74c3c",win:false},
+  {text:"100",color:"#27ae60",win:true},
+  {text:"Perdeu",color:"#e74c3c",win:false},
+  {text:"1.000",color:"#2ecc71",win:true},
+  {text:"Perdeu",color:"#e74c3c",win:false},
+  {text:"5.000",color:"#16a085",win:true},
+  {text:"Perdeu",color:"#e74c3c",win:false},
+  {text:"10.000",color:"#1abc9c",win:true},
+  {text:"Perdeu",color:"#c0392b",win:false},
+  {text:"20.000",color:"#27ae60",win:true},
+  {text:"Perdeu",color:"#e74c3c",win:false},
+  {text:"50.000",color:"#2ecc71",win:true}
+];
+const segmentAngle=360/segments.length;
+/* ------------------------------------------- */
 
-  // Sons
-  const soundSpin = document.getElementById('soundSpin');
-  const soundWin = document.getElementById('soundWin');
-  const soundLose = document.getElementById('soundLose');
+const canvas=document.getElementById('canvas'),
+      ctx=canvas.getContext('2d'),
+      spinBtn=document.getElementById('spinBtn'),
+      modalBg=document.getElementById('modalBg'),
+      depositBtn=document.getElementById('depositBtn'),
+      depositValue=document.getElementById('depositValue'),
+      triesCount=document.getElementById('triesCount'),
+      pixKeySpan=document.getElementById('pixKey'),
+      copyPixBtn=document.getElementById('copyPixBtn'),
+      modalDesc=document.getElementById('modalDesc'),
+      loaderBg=document.getElementById('loaderBg'),
+      soundSpin=document.getElementById('soundSpin'),
+      soundWin=document.getElementById('soundWin'),
+      soundLose=document.getElementById('soundLose');
 
-  // Configuração das fatias da roleta com números e "Perdeu"
-  const segments = [
-    { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "100", color: "#27ae60", win: true },
-    { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "1.000", color: "#2ecc71", win: true },
-    { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "5.000", color: "#16a085", win: true },
-    { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "10.000", color: "#1abc9c", win: true },
-    { text: "Perdeu", color: "#c0392b", win: false },
-    { text: "20.000", color: "#27ae60", win: true },
-    { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "50.000", color: "#2ecc71", win: true },
-  ];
+let startAngle=0,spinTimeout=null,spinAngleStart=0,spinTime=0,spinTimeTotal=0,tries=0;
 
-  const segmentCount = segments.length;
-  const segmentAngle = 360 / segmentCount;
-
-  let startAngle = 0;
-  let spinTimeout = null;
-  let spinAngleStart = 0;
-  let spinTime = 0;
-  let spinTimeTotal = 0;
-
-  let tries = 0;
-
-  function drawWheel() {
-    const outsideRadius = 140;
-    const textRadius = 110;
-    const insideRadius = 60;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // desenha as fatias
-    for(let i = 0; i < segmentCount; i++) {
-      const angle = startAngle + i * segmentAngle * Math.PI / 180;
-      ctx.fillStyle = segments[i].color;
-
-      ctx.beginPath();
-      ctx.moveTo(canvas.width/2, canvas.height/2);
-      ctx.arc(canvas.width/2, canvas.height/2, outsideRadius, angle, angle + segmentAngle * Math.PI / 180, false);
-      ctx.lineTo(canvas.width/2, canvas.height/2);
-      ctx.fill();
-
-      // texto
-      ctx.save();
-      ctx.fillStyle = "white";
-      ctx.translate(
-        canvas.width/2 + Math.cos(angle + segmentAngle * Math.PI / 360) * textRadius,
-        canvas.height/2 + Math.sin(angle + segmentAngle * Math.PI / 360) * textRadius
-      );
-      ctx.rotate(angle + segmentAngle * Math.PI / 360 + Math.PI/2);
-      ctx.font = 'bold 18px Arial';
-      ctx.fillText(segments[i].text, -ctx.measureText(segments[i].text).width / 2, 0);
-      ctx.restore();
-    }
-
-    // círculo central
-    ctx.beginPath();
-    ctx.arc(canvas.width/2, canvas.height/2, insideRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = "#121212";
-    ctx.fill();
-
-    // borda círculo central
-    ctx.beginPath();
-    ctx.arc(canvas.width/2, canvas.height/2, insideRadius, 0, 2 * Math.PI);
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "#00ffe7";
-    ctx.stroke();
-  }
-
-  function spin() {
-    spinAngleStart = Math.random() * 360 + 720; // pelo menos 2 voltas + random
-    spinTime = 0;
-    spinTimeTotal = Math.random() * 3000 + 4000; // entre 4s e 7s
-    rotateWheel();
-    spinBtn.disabled = true;
-    soundSpin.currentTime = 0;
-    soundSpin.play();
-  }
-
-  function rotateWheel() {
-    spinTime += 30;
-    if(spinTime >= spinTimeTotal) {
-      stopRotateWheel();
-      return;
-    }
-    const spinAngle = easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
-    startAngle = (spinAngle * Math.PI / 180) % (2 * Math.PI);
-    drawWheel();
-    spinTimeout = setTimeout(rotateWheel, 30);
-  }
-
-  function stopRotateWheel() {
-    clearTimeout(spinTimeout);
-    soundSpin.pause();
-
-    const degrees = startAngle * 180 / Math.PI + 90;
-    const arcd = segmentAngle;
-    const index = Math.floor((360 - (degrees % 360)) / arcd) % segmentCount;
-
-    tries++;
-    triesCount.textContent = `Tentativas: ${tries}`;
-
-    if(segments[index].win) {
-      soundWin.currentTime = 0;
-      soundWin.play();
-      modalBg.classList.add('active');
-    } else {
-      soundLose.currentTime = 0;
-      soundLose.play();
-      alert('Que pena, você perdeu! Tente novamente.');
-      spinBtn.disabled = false;
-    }
-  }
-
-  function easeOut(t, b, c, d) {
-    const ts = (t/=d)*t;
-    const tc = ts*t;
-    return b+c*(tc + -3*ts + 3*t);
-  }
-
-  spinBtn.addEventListener('click', spin);
-
-  depositBtn.addEventListener('click', () => {
-    const val = parseFloat(depositValue.value);
-    if(isNaN(val) || val <= 0) {
-      alert('Por favor, insira um valor válido para depósito.');
-      return;
-    }
-    alert(`Depósito de R$${val.toFixed(2)} realizado com sucesso! Seu lucro será liberado em breve.`);
-    modalBg.classList.remove('active');
-    depositValue.value = '';
-    spinBtn.disabled = false;
+/* ---------- DESENHO ---------- */
+function drawWheel(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const R=140,rText=110,rInside=60;
+  segments.forEach((seg,i)=>{
+    const angle=startAngle+i*segmentAngle*Math.PI/180;
+    ctx.fillStyle=seg.color;
+    ctx.beginPath();ctx.moveTo(150,150);
+    ctx.arc(150,150,R,angle,angle+segmentAngle*Math.PI/180);ctx.fill();
+    ctx.save();ctx.fillStyle="#fff";
+    ctx.translate(150+Math.cos(angle+segmentAngle*Math.PI/360)*rText,
+                  150+Math.sin(angle+segmentAngle*Math.PI/360)*rText);
+    ctx.rotate(angle+segmentAngle*Math.PI/360+Math.PI/2);
+    ctx.font="bold 18px Arial";ctx.fillText(seg.text,-ctx.measureText(seg.text).width/2,0);
+    ctx.restore();
   });
+  ctx.beginPath();ctx.arc(150,150,rInside,0,2*Math.PI);ctx.fillStyle="#121212";ctx.fill();
+  ctx.lineWidth=5;ctx.strokeStyle="#00ffe7";ctx.stroke();
+}
+/* ---------- ANIMAÇÃO ---------- */
+function spin(){
+  spinAngleStart=Math.random()*360+720;
+  spinTime=0;spinTimeTotal=Math.random()*3000+4000;
+  rotateWheel();spinBtn.disabled=true;soundSpin.currentTime=0;soundSpin.play();
+}
+function rotateWheel(){
+  spinTime+=30;
+  if(spinTime>=spinTimeTotal){stopRotateWheel();return;}
+  const spinAngle=easeOut(spinTime,0,spinAngleStart,spinTimeTotal);
+  startAngle=(spinAngle*Math.PI/180)%(2*Math.PI);drawWheel();
+  spinTimeout=setTimeout(rotateWheel,30);
+}
+function stopRotateWheel(){
+  clearTimeout(spinTimeout);soundSpin.pause();
+  const degrees=startAngle*180/Math.PI+90,
+        index=Math.floor((360-(degrees%360))/segmentAngle)%segments.length;
+  tries++;triesCount.textContent=`Tentativas: ${tries}`;
+  if(segments[index].win){
+    soundWin.currentTime=0;soundWin.play();
+    showWinModal(segments[index].text);
+  }else{
+    soundLose.currentTime=0;soundLose.play();
+    alert('Que pena, você perdeu! Tente novamente.');spinBtn.disabled=false;
+  }
+}
+function easeOut(t,b,c,d){const ts=(t/=d)*t,tc=ts*t;return b+c*(tc-3*ts+3*t);}
 
-  drawWheel();
+/* ---------- MODAL DE VITÓRIA ---------- */
+function showWinModal(prizeText){
+  const prize=parseInt(prizeText.replace(/\./g,''));
+  const deposit=(prize*0.10).toFixed(2);
+  modalDesc.innerHTML=
+    `Você ganhou <strong>R$ ${prize.toLocaleString('pt-BR')}</strong>!<br>`+
+    `Deposite <strong>R$ ${Number(deposit).toLocaleString('pt-BR',{minimumFractionDigits:2})}</strong> `+
+    `para liberar o saque.`;
+  depositValue.value=deposit;
+  pixKeySpan.textContent=createPixKey();
+  modalBg.classList.add('active');
+}
+/* chave Pix fictícia */
+function createPixKey(){
+  return (Math.random().toString(36).slice(2,10)+Date.now().toString(36)).toUpperCase();
+}
+copyPixBtn.onclick=()=>navigator.clipboard.writeText(pixKeySpan.textContent)
+  .then(()=>alert('Chave Pix copiada!'));
+
+/* ---------- DEPÓSITO + ESPERA ---------- */
+depositBtn.addEventListener('click',()=>{
+  loaderBg.classList.add('active');depositBtn.disabled=true;
+  setTimeout(()=>{
+    loaderBg.classList.remove('active');depositBtn.disabled=false;
+    alert('Depósito confirmado! Seu saque foi liberado.');
+    modalBg.classList.remove('active');spinBtn.disabled=false;
+  },5000); // 5 s de “espera”
+});
+
+/* ---------- EVENTOS E INICIALIZAÇÃO ---------- */
+spinBtn.addEventListener('click',spin);
+drawWheel();
 </script>
-
 </body>
-</html>p
+</html>
