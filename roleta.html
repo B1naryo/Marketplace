@@ -262,16 +262,20 @@
   const soundWin = document.getElementById('soundWin');
   const soundLose = document.getElementById('soundLose');
 
-  // Configuração das fatias da roleta
+  // Configuração das fatias da roleta com números e "Perdeu"
   const segments = [
     { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "10x", color: "#27ae60", win: true },
+    { text: "100", color: "#27ae60", win: true },
     { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "5x", color: "#2ecc71", win: true },
+    { text: "1.000", color: "#2ecc71", win: true },
     { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "2x", color: "#16a085", win: true },
+    { text: "5.000", color: "#16a085", win: true },
     { text: "Perdeu", color: "#e74c3c", win: false },
-    { text: "1x", color: "#1abc9c", win: true }
+    { text: "10.000", color: "#1abc9c", win: true },
+    { text: "Perdeu", color: "#c0392b", win: false },
+    { text: "20.000", color: "#27ae60", win: true },
+    { text: "Perdeu", color: "#e74c3c", win: false },
+    { text: "50.000", color: "#2ecc71", win: true },
   ];
 
   const segmentCount = segments.length;
@@ -311,7 +315,7 @@
         canvas.height/2 + Math.sin(angle + segmentAngle * Math.PI / 360) * textRadius
       );
       ctx.rotate(angle + segmentAngle * Math.PI / 360 + Math.PI/2);
-      ctx.font = 'bold 20px Arial';
+      ctx.font = 'bold 18px Arial';
       ctx.fillText(segments[i].text, -ctx.measureText(segments[i].text).width / 2, 0);
       ctx.restore();
     }
@@ -399,5 +403,4 @@
 </script>
 
 </body>
-</html>
-
+</html>p
