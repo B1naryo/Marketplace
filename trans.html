@@ -1,157 +1,127 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Rastreamento de Entrega</title>
-    <style>
-        /* —— Estilo simples e institucional —— */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }.container {
-        max-width: 720px;
-        margin: 40px auto;
-        background-color: #fff;
-        padding: 2rem;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        border-radius: 6px;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Rastreamento de Entrega</title>
 
-    h1 {
-        text-align: center;
-        color: #003366;
+  <style>
+    /* —— Estilo simples e institucional —— */
+    body{
+      font-family:Arial,sans-serif;background:#f1f1f1;margin:0;padding:0;color:#333
     }
-
-    p {
-        line-height: 1.5;
+    .container{
+      max-width:720px;margin:40px auto;background:#fff;padding:2rem;
+      box-shadow:0 0 10px rgba(0,0,0,.1);border-radius:6px;
     }
-
-    input, button, a {
-        width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 16px;
+    h1{text-align:center;color:#003366}
+    p{line-height:1.5}
+    input,button,a{
+      width:100%;padding:12px;margin-top:10px;border:1px solid #ccc;
+      border-radius:4px;box-sizing:border-box;font-size:16px
     }
-
-    button, a {
-        background-color: #003366;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-        cursor: pointer;
+    button,a{
+      background:#003366;color:#fff;text-align:center;
+      text-decoration:none;font-weight:bold;cursor:pointer
     }
-
-    button:hover, a:hover {
-        background-color: #002244;
+    button:hover,a:hover{background:#002244}
+    .timeline{border-left:3px solid #003366;padding-left:15px;margin-top:20px}
+    .event{margin-bottom:10px}
+    .fee{
+      background:#fff3f3;border:1px solid #c00;padding:1rem;margin-top:20px;
+      border-radius:4px
     }
-
-    .timeline {
-        border-left: 3px solid #003366;
-        padding-left: 15px;
-        margin-top: 20px;
-    }
-
-    .event {
-        margin-bottom: 10px;
-    }
-
-    .fee {
-        background-color: #fff3f3;
-        border: 1px solid #cc0000;
-        padding: 1rem;
-        margin-top: 20px;
-        border-radius: 4px;
-    }
-
-    .fee p {
-        color: #cc0000;
-        font-weight: bold;
-        margin: 0 0 10px 0;
-    }
-
-    .pay-btn {
-        background-color: #cc0000;
-        border-color: #cc0000;
-    }
-
-    .pay-btn:hover {
-        background-color: #990000;
-    }
-</style>
-
+    .fee p{color:#c00;font-weight:bold;margin:0 0 10px}
+    .pay-btn{background:#c00;border-color:#c00}
+    .pay-btn:hover{background:#900}
+  </style>
 </head>
+
 <body>
-<main class="container">
+  <main class="container">
     <h1>Rastreamento de Entrega</h1>
     <p>Digite seu código de rastreamento abaixo. Se houver taxa de liberação alfandegária, você poderá quitá-la através do link gerado.</p>
+
     <input id="trackInput" placeholder="Ex.: BR123456789CN" autocomplete="off">
-    <button onclick="track()">Rastrear</button><div id="result"></div>
+    <button onclick="track()">Rastrear</button>
 
-</main><script>
-const dummyData = {
-  "LB987654321BR": [
-    { status: "Objeto postado", date: "2025-06-20 10:00" },
-    { status: "Objeto em trânsito", date: "2025-06-22 07:08" },
-    { status: "Objeto entregue ao destinatário", date: "2025-06-25 16:45" }
-  ]
-};
+    <div id="result"></div>
+  </main>
 
-function track () {
-  const code = document.getElementById('trackInput').value.trim().toUpperCase();
-  const resDiv = document.getElementById('result');
-  resDiv.innerHTML = '';
-  if (!code) return;
+  <script>
+    /* Base de exemplo para demonstrar o fluxo */
+    const dummyData = {
+      "LB987654321BR": [
+        { status: "Objeto postado", date: "2025-06-20 10:00" },
+        { status: "Objeto em trânsito", date: "2025-06-22 07:08" },
+        { status: "Objeto entregue ao destinatário", date: "2025-06-25 16:45" }
+      ]
+    };
 
-  let history = dummyData[code];
+    /**  Re-renderiza a linha do tempo para o código informado */
+    function track () {
+      const code   = document.getElementById('trackInput').value.trim().toUpperCase();
+      const resDiv = document.getElementById('result');
+      resDiv.innerHTML = '';
+      if (!code) return;
 
-  if (!history) {
-    history = [
-      { status: "Produto localizado no centro de distribuição da transportadora", date: "2025-07-06 09:30" },
-      { status: "Aguardando pagamento da taxa de liberação alfandegária", date: "2025-07-06 09:35", fee: 6.89 }
-    ];
-  }
+      /* Obtém histórico salvo ou cria um novo (com taxa a pagar) */
+      let history = dummyData[code];
+      if (!history) {
+        history = [
+          { status: "Produto localizado no centro de distribuição da transportadora",
+            date: "2025-07-06 09:30" },
+          { status: "Aguardando pagamento da taxa de liberação alfandegária",
+            date: "2025-07-06 09:35", fee: 6.89 }
+        ];
+        dummyData[code] = history;
+      }
 
-  const timeline = document.createElement('div');
-  timeline.className = 'timeline';
-  history.forEach(ev => {
-    const div = document.createElement('div');
-    div.className = 'event';
-    div.textContent = `${ev.date} — ${ev.status}`;
-    timeline.appendChild(div);
-  });
-  resDiv.appendChild(timeline);
+      /* Linha do tempo */
+      const timeline = document.createElement('div');
+      timeline.className = 'timeline';
+      history.forEach(ev => {
+        const div = document.createElement('div');
+        div.className = 'event';
+        div.textContent = `${ev.date} — ${ev.status}`;
+        timeline.appendChild(div);
+      });
+      resDiv.appendChild(timeline);
 
-  const last = history[history.length - 1];
-  if (last.fee) {
-    const feeBox = document.createElement('div');
-    feeBox.className = 'fee';
-    const payUrl = `https://pagamento.exemplo.com/pagar?ref=${encodeURIComponent(code)}&valor=${last.fee}`;
-    feeBox.innerHTML = `<p>Taxa de liberação pendente: R$ ${last.fee.toFixed(2).replace('.', ',')}</p>` +
-                       `<a class="pay-btn" href="${payUrl}" target="_blank" onclick="payFee('${code}', ${last.fee});return false;">Pagar taxa agora</a>`;
-    resDiv.appendChild(feeBox);
-  }
-}
+      /* Se a última entrada contém taxa, exibe caixa de pagamento */
+      const last = history[history.length - 1];
+      if (last.fee) {
+        const feeBox = document.createElement('div');
+        feeBox.className = 'fee';
+        const payUrl = `https://pagamento.exemplo.com/pagar?ref=${encodeURIComponent(code)}&valor=${last.fee}`;
+        feeBox.innerHTML =
+          `<p>Taxa de liberação pendente: R$ ${last.fee.toFixed(2).replace('.', ',')}</p>
+           <a  class="pay-btn"
+               href="${payUrl}"
+               target="_blank"
+               onclick="payFee('${code}', ${last.fee})">Pagar taxa agora</a>`;
+        resDiv.appendChild(feeBox);
+      }
+    }
 
-function payFee (code, fee) {
-  alert('Pagamento de R$ ' + fee.toFixed(2).replace('.', ',') + ' recebido!\nSeu pagamento será analisado em até 24 horas.');
-  let hist = dummyData[code];
-  if (!hist) {
-    hist = [
-      { status: "Produto localizado no centro de distribuição da transportadora", date: "2025-07-06 09:30" }
-    ];
-    dummyData[code] = hist;
-  }
-  const lastIndex = hist.length - 1;
-  if (hist[lastIndex].fee) delete hist[lastIndex].fee;
-  hist.push({ status: 'Pagamento recebido, em análise (até 24h)', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
-  track();
-}
-</script></body>
+    /** Insere “Pagamento em análise” antes de abrir o link */
+    function payFee (code, fee) {
+      alert('Você será redirecionado para o pagamento.\n' +
+            'Assim que o comprovante for recebido, seu pedido será analisado em até 24 h.');
+
+      /* Atualiza histórico local */
+      const hist = dummyData[code] || [];
+      const last = hist[hist.length - 1];
+      if (last && last.fee) delete last.fee;     // remove campo fee
+      hist.push({
+        status: 'Pagamento em análise (até 24 h)',
+        date  : new Date().toISOString().slice(0, 16).replace('T', ' ')
+      });
+      dummyData[code] = hist;
+
+      track();   // re-renderiza a linha do tempo
+      /* Não há return false → a navegação para o link continuará */
+    }
+  </script>
+</body>
 </html>
