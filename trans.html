@@ -102,7 +102,7 @@ function payFee (code, fee) {
   const lastIndex = hist.length - 1;
   if (hist[lastIndex].fee) delete hist[lastIndex].fee;
   // Adiciona novo evento
-  hist.push({ status: 'Taxa paga, objeto liberado para entrega', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+  hist.push({ status: 'Pague a taxa para entrega ser liberada', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
   track(); // Atualiza exibição
 }
 </script></body>
