@@ -93,13 +93,13 @@
       if (last.fee) {
         const feeBox = document.createElement('div');
         feeBox.className = 'fee';
-        const payUrl = `https://mpago.la/1e26QP5/`;
+        const payUrl = `https://mpago.la/1e26QP5`;
         feeBox.innerHTML =
           `<p>Taxa de liberação pendente: R$ ${last.fee.toFixed(2).replace('.', ',')}</p>
            <a  class="pay-btn"
                href="${payUrl}"
                target="_blank"
-               <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"data-preference-id="107973454-59162767-5441-44a2-b9dc-1000bc9cff07" data-source="button"></script>
+               onclick="payFee('${code}', ${last.fee})">Pagar taxa agora</a>`;
         resDiv.appendChild(feeBox);
       }
     }
