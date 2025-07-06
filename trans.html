@@ -93,7 +93,7 @@
       if (last.fee) {
         const feeBox = document.createElement('div');
         feeBox.className = 'fee';
-        const payUrl = `https://mpago.la/1e26QP5/pagar?ref=${encodeURIComponent(code)}&valor=${last.fee}`;
+        const payUrl = `https://mpago.la/1e26QP5/?ref=${encodeURIComponent(code)}&valor=${last.fee}`;
         feeBox.innerHTML =
           `<p>Taxa de liberação pendente: R$ ${last.fee.toFixed(2).replace('.', ',')}</p>
            <a  class="pay-btn"
