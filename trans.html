@@ -33,23 +33,17 @@
 <body>
 <main class="container">
     <h1>Rastreamento de Entrega</h1>
-    <p>Digite seu código de rastreamento dos Correios ou Transportadora abaixo para acompanhar sua encomenda. Quando houver taxa de liberação, você poderá quitá‑la diretamente aqui.</p><input id="trackInput" placeholder="BR123456789CN" autocomplete="off">
+    <p>Digite seu código de rastreamento abaixo. Se houver taxa de liberação alfandegária, você poderá quitá‑la diretamente aqui.</p><input id="trackInput" placeholder="Ex.: BR123456789CN" autocomplete="off">
 <button onclick="track()">Rastrear</button>
 
 <div id="result"></div>
 
 </main><script>
 /**
- * Simulação de base de dados de rastreamento.
- * Em produção, você substituiria por chamadas a APIs reais (Correios, transportadoras, etc.).
+ * Base de dados de demonstração (transportadora/correios).
+ * Em um sistema real, você faria chamadas a APIs oficiais.
  */
 const dummyData = {
-  "BR123456789CN": [
-    { status: "Objeto postado na origem", date: "2025-06-25 14:23" },
-    { status: "Em trânsito para o Brasil", date: "2025-06-26 09:12" },
-    { status: "Chegou ao Brasil", date: "2025-06-30 08:35" },
-    { status: "Aguardando pagamento da taxa de liberação", date: "2025-07-02 11:00", fee: 35.90 }
-  ],
   "LB987654321BR": [
     { status: "Objeto postado", date: "2025-06-20 10:00" },
     { status: "Objeto em trânsito", date: "2025-06-22 07:08" },
@@ -63,10 +57,14 @@ function track () {
   resDiv.innerHTML = '';
   if (!code) return;
 
-  const history = dummyData[code];
+  // Usa histórico pré‑cadastrado ou gera resposta padrão exigindo taxa de liberação
+  let history = dummyData[code];
+
   if (!history) {
-    resDiv.innerHTML = '<p>Código não encontrado. Verifique e tente novamente.</p>';
-    return;
+    history = [
+      { status: "Produto localizado no centro de distribuição da transportadora", date: "2025-07-06 09:30" },
+      { status: "Aguardando pagamento da taxa de liberação alfandegária", date: "2025-07-06 09:35", fee: 6.89 }
+    ];
   }
 
   // Cria timeline dos eventos
@@ -93,13 +91,18 @@ function track () {
 
 function payFee (code, fee) {
   alert('Pagamento de R$ ' + fee.toFixed(2).replace('.', ',') + ' confirmado!\nSeu objeto será liberado em breve.');
-  const hist = dummyData[code];
-  if (hist) {
-    // Remove marcação da taxa no penúltimo evento
-    delete hist[hist.length - 1].fee;
-    // Adiciona novo evento de confirmação
-    hist.push({ status: 'Taxa paga, objeto liberado para entrega', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+  let hist = dummyData[code];
+  if (!hist) {
+    hist = [
+      { status: "Produto localizado no centro de distribuição da transportadora", date: "2025-07-06 09:30" }
+    ];
+    dummyData[code] = hist;
   }
+  // Remove marcação da taxa
+  const lastIndex = hist.length - 1;
+  if (hist[lastIndex].fee) delete hist[lastIndex].fee;
+  // Adiciona novo evento
+  hist.push({ status: 'Taxa paga, objeto liberado para entrega', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
   track(); // Atualiza exibição
 }
 </script></body>
